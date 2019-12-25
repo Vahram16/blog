@@ -14,6 +14,8 @@
 Route::get('/', 'AuthController@index')->name('home');
 Route::get('/admin', 'admin\AdminController@index')->name('indexAdmin');
 Route::post('/login', 'AuthController@login')->name('login');
+Route::get('/password', 'PasswordController@index')->name('passwordIndex');
+Route::post('/reset-password', 'PasswordController@resetPassword')->name('resetPassword');
 
 
 Route::prefix('admin')->group(function () {
@@ -23,7 +25,6 @@ Route::prefix('admin')->group(function () {
     Route::get('/main-admin', 'admin\AdminController@mainAdmin')->name('mainAdmin');
     Route::get('/create-register', 'admin\AdminController@createRegister')->name('createRegister');
     Route::post('/register', 'admin\AdminController@register')->name('register');
-
     Route::get('/logout-admin', 'admin\AdminController@logout')->name('logoutAdmin');
 
 

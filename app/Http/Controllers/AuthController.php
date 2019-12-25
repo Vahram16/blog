@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\UserLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -30,6 +31,14 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt(['user_name' => $request->user_name, 'password' => $request->password])) {
+
+            UserLog::create([
+
+                'user_id' => Auth::user()->id
+
+            ]);
+
+
             return redirect()->route('index');
         } else {
             return back();
