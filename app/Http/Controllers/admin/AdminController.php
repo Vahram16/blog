@@ -97,6 +97,16 @@ class AdminController extends Controller
                 ->withInput();
         }
 
+        $user = User::where('user_name', $request->user_name)
+            ->first();
+
+        if (!empty($user)) {
+
+            return back()
+                ->withErrors('The username already exists');
+        }
+
+
         User::create(
             [
                 'name' => $request->name,
