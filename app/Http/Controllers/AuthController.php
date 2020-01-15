@@ -41,7 +41,8 @@ class AuthController extends Controller
 
             return redirect()->route('index');
         } else {
-            return back();
+            return back()
+                ->withErrors(' The password is incorrect');
         }
 
     }

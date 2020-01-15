@@ -26,6 +26,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/create-register', 'admin\AdminController@createRegister')->name('createRegister');
     Route::post('/register', 'admin\AdminController@register')->name('register');
     Route::get('/logout-admin', 'admin\AdminController@logout')->name('logoutAdmin');
+    Route::get('/delete-user/{id}', 'admin\AdminController@deleteUser')->name('deleteUser');
 
 
 });

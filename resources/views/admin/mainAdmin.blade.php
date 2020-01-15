@@ -23,6 +23,7 @@
                             @endforeach
                         @endif
                     </select></td>
+                <td>  <a class="alert-danger" href="{{route('deleteUser',$user['id'])}}" >   delete </a></td>
             </tr>
         @endforeach
         </tbody>

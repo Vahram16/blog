@@ -16,7 +16,6 @@ class AdminController extends Controller
 
     public function index()
     {
-
         return view('admin.login');
 
 
@@ -39,6 +38,7 @@ class AdminController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
 
+
             return redirect()->route('mainAdmin');
         } else {
             return back()->withErrors('password is incorrect');
@@ -49,13 +49,22 @@ class AdminController extends Controller
     public function mainAdmin()
     {
 
+        if (Auth::user()->role_id == 2) {
+
+
+            return back()
+                ->withErrors('You do not have admin access');
+        }
+
+
         $users = User::with('userLog')->get();
         $userWithLog = [];
         foreach ($users as $user) {
             $userWithLog[$user->id] =
                 [
                     'name' => $user->name,
-                    'user_name' => $user->user_name
+                    'user_name' => $user->user_name,
+                    'id' => $user->id
                 ];
 
             $monthlyLogs = $user['userLog']->where('created_at', '>', Carbon::now()->subDays(30));
@@ -76,6 +85,13 @@ class AdminController extends Controller
     public
     function createRegister()
     {
+
+        if (Auth::user()->role_id == 2) {
+
+
+            return back()
+                ->withErrors('your role does not have  access  to the admin');
+        }
         return view('admin.createRegister');
 
     }
@@ -86,8 +102,8 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
 
             'name' => 'required',
-            'user_name' => 'required',
-            'email' => 'required|email',
+            'user_name' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:5'
 
         ]);
@@ -95,15 +111,6 @@ class AdminController extends Controller
             return back()
                 ->withErrors($validator)
                 ->withInput();
-        }
-
-        $user = User::where('user_name', $request->user_name)
-            ->first();
-
-        if (!empty($user)) {
-
-            return back()
-                ->withErrors('The username already exists');
         }
 
 
@@ -130,6 +137,18 @@ class AdminController extends Controller
         Auth::logout();
         return redirect()
             ->route('home');
+
+    }
+
+    public function deleteUser(Request $request)
+    {
+//        $user = User::where('id', $request->id)
+//            ->first();
+
+
+        $user = User::find($request->id);
+        $user->delete();
+        return back();
 
     }
 

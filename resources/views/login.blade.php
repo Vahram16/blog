@@ -44,7 +44,7 @@
                             </ul>
                         </div>
                     @endif
-                    <a href="{{route('passwordIndex')}}">Can't access your account?</a>
+                    <a href="{{route('passwordIndex')}}">Forgot Password ?</a>
                     <button>Sign In</button>
                 </form>
 
